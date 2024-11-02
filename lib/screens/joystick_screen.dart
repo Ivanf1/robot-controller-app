@@ -2,6 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:robot_controller/components/joystick.dart';
 
+int mapValue(double value, int lastValue) {
+  if (value == 0) {
+    return lastValue >= 1024 ? 1024 : 0;
+  }
+  if (value < 0) {
+    return ((-value) * 1023).round();
+  } else {
+    return ((value * 1023) + 1024).round();
+  }
+}
+
 class JoystickScreen extends StatefulWidget {
   const JoystickScreen({super.key});
 
@@ -10,14 +21,29 @@ class JoystickScreen extends StatefulWidget {
 }
 
 class _JoystickScreenState extends State<JoystickScreen> {
-  void _onLeftJoystickChange(details) {
-    print("left x: ${details.x}");
-    print("left y: ${details.y}");
+  int _lastLeftYValue = 0;
+  int _lastLeftXValue = 0;
+  int _lastRightYValue = 0;
+  int _lastRightXValue = 0;
+
+  void _onLeftJoystickChange(StickDragDetails details) {
+    int newLeftXValue = mapValue(details.x, _lastLeftXValue);
+    print("left x: $newLeftXValue");
+    _lastLeftXValue = newLeftXValue;
+
+    int newLeftYValue = mapValue(details.y, _lastLeftYValue);
+    print("left y: $newLeftYValue");
+    _lastLeftYValue = newLeftYValue;
   }
 
-  void _onRightJoystickChange(details) {
-    print("right x: ${details.x}");
-    print("right y: ${details.y}");
+  void _onRightJoystickChange(StickDragDetails details) {
+    int newRightXValue = mapValue(details.x, _lastRightXValue);
+    print("right x: $newRightXValue");
+    _lastRightXValue = newRightXValue;
+
+    int newRightYValue = mapValue(details.y, _lastRightYValue);
+    print("right y: $newRightYValue");
+    _lastRightYValue = newRightYValue;
   }
 
   @override
