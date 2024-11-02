@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:robot_controller/components/joystick.dart';
-
-int mapValue(double value, int lastValue) {
-  if (value == 0) {
-    return lastValue >= 1024 ? 1024 : 0;
-  }
-  if (value < 0) {
-    return ((-value) * 1023).round();
-  } else {
-    return ((value * 1023) + 1024).round();
-  }
-}
+import 'package:robot_controller/data/joystick_value.dart';
+import 'package:robot_controller/streams/joystick_stream.dart';
+import 'package:robot_controller/utils/utils.dart';
 
 class JoystickScreen extends StatefulWidget {
   const JoystickScreen({super.key});
@@ -27,22 +19,30 @@ class _JoystickScreenState extends State<JoystickScreen> {
   int _lastRightXValue = 0;
 
   void _onLeftJoystickChange(StickDragDetails details) {
-    int newLeftXValue = mapValue(details.x, _lastLeftXValue);
-    print("left x: $newLeftXValue");
-    _lastLeftXValue = newLeftXValue;
+    int newLeftXValue =
+        mapJoystickValueToMotorSpeed(details.x, _lastLeftXValue);
+    int newLeftYValue =
+        mapJoystickValueToMotorSpeed(details.y, _lastLeftYValue);
 
-    int newLeftYValue = mapValue(details.y, _lastLeftYValue);
-    print("left y: $newLeftYValue");
+    JoystickStreamController.updateLeftValue(
+      JoystickValue(x: newLeftXValue, y: newLeftYValue),
+    );
+
+    _lastLeftXValue = newLeftXValue;
     _lastLeftYValue = newLeftYValue;
   }
 
   void _onRightJoystickChange(StickDragDetails details) {
-    int newRightXValue = mapValue(details.x, _lastRightXValue);
-    print("right x: $newRightXValue");
-    _lastRightXValue = newRightXValue;
+    int newRightXValue =
+        mapJoystickValueToMotorSpeed(details.x, _lastRightXValue);
+    int newRightYValue =
+        mapJoystickValueToMotorSpeed(details.y, _lastRightYValue);
 
-    int newRightYValue = mapValue(details.y, _lastRightYValue);
-    print("right y: $newRightYValue");
+    JoystickStreamController.updateRightValue(
+      JoystickValue(x: newRightXValue, y: newRightYValue),
+    );
+
+    _lastRightXValue = newRightXValue;
     _lastRightYValue = newRightYValue;
   }
 
