@@ -6,10 +6,12 @@ class CustomJoystick extends StatefulWidget {
     super.key,
     required this.mode,
     required this.initialAlignment,
+    required this.onJoystickChange,
   });
 
   final JoystickMode mode;
   final Alignment initialAlignment;
+  final void Function(StickDragDetails) onJoystickChange;
 
   @override
   State<CustomJoystick> createState() => _CustomJoystickState();
@@ -41,7 +43,7 @@ class _CustomJoystickState extends State<CustomJoystick> {
       ),
       mode: widget.mode,
       includeInitialAnimation: false,
-      listener: (details) {},
+      listener: widget.onJoystickChange,
     );
   }
 }
