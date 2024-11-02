@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_joystick/flutter_joystick.dart';
+import 'package:robot_controller/components/joystick.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +14,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Robot controller',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Robot controller'),
@@ -34,13 +35,41 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: const Color.fromARGB(8, 0, 0, 0),
         title: Text(widget.title),
       ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+      body: const JoystickPage(),
+    );
+  }
+}
+
+class JoystickPage extends StatelessWidget {
+  const JoystickPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              height: constraints.maxHeight,
+              width: constraints.maxWidth / 2,
+              child: const CustomJoystick(
+                mode: JoystickMode.all,
+                initialAlignment: Alignment(-0.8, 0.2),
+              ),
+            ),
+            SizedBox(
+              height: constraints.maxHeight,
+              width: constraints.maxWidth / 2,
+              child: const CustomJoystick(
+                mode: JoystickMode.horizontal,
+                initialAlignment: Alignment(0.8, 0.2),
+              ),
+            ),
+          ],
         ),
       ),
     );
