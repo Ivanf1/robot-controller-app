@@ -3,7 +3,6 @@ import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:robot_controller/components/joystick.dart';
 import 'package:robot_controller/data/joystick_value.dart';
 import 'package:robot_controller/streams/joystick_stream.dart';
-import 'package:robot_controller/utils/utils.dart';
 
 class JoystickScreen extends StatefulWidget {
   const JoystickScreen({super.key});
@@ -13,37 +12,25 @@ class JoystickScreen extends StatefulWidget {
 }
 
 class _JoystickScreenState extends State<JoystickScreen> {
-  int _lastLeftYValue = 0;
-  int _lastLeftXValue = 0;
-  int _lastRightYValue = 0;
-  int _lastRightXValue = 0;
-
   void _onLeftJoystickChange(StickDragDetails details) {
-    int newLeftXValue =
-        mapJoystickValueToMotorSpeed(details.x, _lastLeftXValue);
-    int newLeftYValue =
-        mapJoystickValueToMotorSpeed(details.y, _lastLeftYValue);
-
+    // NOTE: axis x of robot is axis y of joystick
+    //       axis y of robot is axis x of joystick
+    // y axis of joystick needs to be inverted
     JoystickStreamController.updateLeftValue(
-      JoystickValue(x: newLeftXValue, y: newLeftYValue),
+      JoystickValue(x: details.y != 0 ? -details.y : 0, y: details.x),
     );
-
-    _lastLeftXValue = newLeftXValue;
-    _lastLeftYValue = newLeftYValue;
   }
 
   void _onRightJoystickChange(StickDragDetails details) {
-    int newRightXValue =
-        mapJoystickValueToMotorSpeed(details.x, _lastRightXValue);
-    int newRightYValue =
-        mapJoystickValueToMotorSpeed(details.y, _lastRightYValue);
-
     JoystickStreamController.updateRightValue(
-      JoystickValue(x: newRightXValue, y: newRightYValue),
+      JoystickValue(x: details.x, y: details.y),
     );
+  }
 
-    _lastRightXValue = newRightXValue;
-    _lastRightYValue = newRightYValue;
+  void _onArmJoystickChange(StickDragDetails details) {
+    // JoystickStreamController.updateRightValue(
+    //   JoystickValue(x: details.x, y: details.y),
+    // );
   }
 
   @override

@@ -9,13 +9,13 @@ class RosManager {
     String? rosBridgeAddress = PreferencesManager.getRosbridgeAddress();
     PreferencesManager.rosbridgeAddressUpdateStream
         .listen(_onRosbridgeAddressUpdate);
+    _ros = Ros(url: rosBridgeAddress);
 
-    if (rosBridgeAddress == null) {
+    if (rosBridgeAddress == null || rosBridgeAddress == "") {
       print("no address specified for rosbridge");
       return;
     }
 
-    _ros = Ros(url: rosBridgeAddress);
     _connect();
   }
 
@@ -23,6 +23,7 @@ class RosManager {
     if (_ros.status == Status.connecting || _ros.status == Status.connected) {
       await _ros.close();
     }
+    print(newAddress);
     _ros.url = newAddress;
     _connect();
   }
@@ -56,6 +57,7 @@ class RosManager {
 
   static void publish(String topic, dynamic message) {
     if (!_topics.containsKey(topic)) return;
+    // if (_ros.status != Status.connected) return;
 
     _topics[topic]!.publish(message);
   }

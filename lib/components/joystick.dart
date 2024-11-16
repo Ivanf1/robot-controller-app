@@ -7,10 +7,12 @@ class CustomJoystick extends StatefulWidget {
     required this.mode,
     required this.initialAlignment,
     required this.onJoystickChange,
+    // required this.joystickSize,
   });
 
   final JoystickMode mode;
   final Alignment initialAlignment;
+  // final double joystickSize;
   final void Function(StickDragDetails) onJoystickChange;
 
   @override
@@ -23,6 +25,8 @@ class _CustomJoystickState extends State<CustomJoystick> {
     return JoystickArea(
       initialJoystickAlignment: widget.initialAlignment,
       base: JoystickBase(
+        size: 200,
+        // size: widget.joystickSize,
         decoration: JoystickBaseDecoration(
           color: const Color.fromARGB(255, 202, 209, 241),
           drawArrows: true,
@@ -36,6 +40,8 @@ class _CustomJoystickState extends State<CustomJoystick> {
         mode: widget.mode,
       ),
       stick: JoystickStick(
+        size: 40,
+        // size: widget.joystickSize / 4,
         decoration: JoystickStickDecoration(
           color: const Color.fromARGB(255, 99, 153, 223),
           shadowColor: const Color.fromARGB(32, 99, 153, 223),

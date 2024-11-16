@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:robot_controller/home.dart';
 import 'package:robot_controller/preferences/preferences_manager.dart';
 import 'package:robot_controller/ros/publishers/joystick_publisher.dart';
@@ -18,6 +19,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Robot controller',
