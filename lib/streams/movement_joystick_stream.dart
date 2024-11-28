@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:robot_controller/data/joystick_value.dart';
 
-class JoystickStreamController {
+class MovementJoystickStreamController {
   static final StreamController<JoystickValue> _leftController =
       StreamController<JoystickValue>.broadcast();
   static final StreamController<JoystickValue> _rightController =

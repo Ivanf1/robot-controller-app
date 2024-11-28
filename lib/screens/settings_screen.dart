@@ -9,23 +9,28 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final inputAddressController = TextEditingController();
+  final inputBridgeAddressController = TextEditingController();
+  final inputPicameraAddressController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    inputAddressController.text =
+    inputBridgeAddressController.text =
         PreferencesManager.getRosbridgeAddress() ?? "";
+    inputBridgeAddressController.text =
+        PreferencesManager.getPicameraAddress() ?? "";
   }
 
   @override
   void dispose() {
-    inputAddressController.dispose();
+    inputBridgeAddressController.dispose();
+    inputPicameraAddressController.dispose();
     super.dispose();
   }
 
   void _onSaveButtonPressed() {
-    PreferencesManager.setRosbridgeAddress(inputAddressController.text);
+    PreferencesManager.setRosbridgeAddress(inputBridgeAddressController.text);
+    PreferencesManager.setPicameraAddress(inputPicameraAddressController.text);
     Navigator.pop(context);
   }
 
@@ -50,12 +55,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               TextField(
-                controller: inputAddressController,
+                controller: inputBridgeAddressController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   hintText: 'rosbridge address',
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10, top: 20),
+                child: Text(
+                  'picamera address',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+              ),
+              TextField(
+                controller: inputPicameraAddressController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  hintText: 'picamera address',
                 ),
               ),
               Padding(
